@@ -1,0 +1,64 @@
+:root {
+  --dark-blue: #14213d;
+  --yello: #fca311;
+  --gray: #e5e5e5;
+}
+body {
+  margin: 0;
+  display: grid;
+  font-family: sans-serif;
+  background-color: var(--gray);
+  grid-template: 20% auto/ minmax(15%, 250px) auto;
+  grid-template-areas:
+    "side nav"
+    "side main";
+}
+
+.sidebar {
+  grid-area: "side";
+  background-color: var(--dark-blue);
+  height: 100vh;
+}
+
+.navbar {
+  display: flex;
+  align-items: center;
+  padding-left: 20px;
+  justify-content: space-around;
+
+  font-weight: bolder;
+  font-size: 50px;
+  color: var(--yello);
+  grid-area: "nav";
+  box-shadow: 0 5px 10px #00000059;
+  margin-bottom: 20px;
+}
+
+.main {
+  grid-area: main;
+  /*make the items flow horizontally and wrap*/
+  display: flex;
+  align-content: flex-start;
+  flex-wrap: wrap;
+  gap: 0;
+  clip: rect(10px, 20px, 30px, 40px);
+}
+
+.book_card {
+  height: 200px;
+  width: 150px;
+  margin: 10px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 1%;
+  border: 1px solid var(--gray);
+  border-radius: 10px;
+  box-shadow: 0 5px 10px #00000059;
+  transition: transform 0.2s;
+}
+
+.book_card:hover {
+  transform: scale(1.05);
+}

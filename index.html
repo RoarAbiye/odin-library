@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Library</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="style.css" rel="stylesheet">
+  <script src="script.js" defer></script>
+</head>
+
+<body>
+  <div class="sidebar"></div>
+  <div class="navbar">
+    <div class="header">Library</div>
+    <button type="button" data-open-modal>Add Book</button>
+  </div>
+  <div class="main"> </div>
+  <dialog data-modal class="modal">
+    <form method="dialog">
+
+      <label for="book_title">Title:</label>
+      <input required class="book_title_in" type="text" name="book_title" value="">
+      <label required for="book_author">Author:</label>
+      <input required class="book_author_in" type="text" name="book_athor" value="">
+      <label required for="read">Read:</label>
+      <input class="read_in" type="checkbox" name="read" value="">
+
+      <button type="submit">Add</button>
+      <button type="submit" class="close_btn" formmethod="dialog" data-close-modal>Close</button>
+    </form>
+  </dialog>
+
+
+</body>
+
+</html>

@@ -5,7 +5,7 @@ const main = document.querySelector('.main')
 const form = document.querySelector('form')
 
 
-library = [{
+let library = [{
   title: 'The Hobbit',
   author: 'J. R. R. Tolkien',
   read: true,
@@ -29,93 +29,66 @@ library = [{
   index: 3
 }];
 
-function Book(title, author, read) {
+function Book(title, author, read, index) {
   this.title = title;
   this.author = author
   this.read = read
+  this.index = index;
 }
-
-function removeBook() {
-  library.splice(library.indexOf(this), 1);
-  for (let i = 0; i < library.length; i++) {
-    library[i].index = i
-  }
-  updateDisplay()
-}
-
-function addBookToLibrary(title, author, read) {
-  library.push(new Book(title, author, read, library.length + 1))
-}
-
-// function addBookToLibrary(title, author, read) {
-//   library.push(new Book(title, author, read, library.length + 1))
-// }
-
-
-
 
 function BookCard(BookObj) {
 
-  let bookCardElm = document.createElement('div')
-  bookCardElm.setAttribute('class', 'book_card')
-
-  let title = document.createElement('h3')
-  title.setAttribute('class', 'title')
+  let title = document.createElement('h4')
   title.textContent = BookObj.title
 
-  let author = document.createElement('h4')
-  author.setAttribute('class', 'author')
+  let author = document.createElement('h5')
   author.textContent = BookObj.author
 
   let read = document.createElement('input')
   read.setAttribute('type', 'checkbox')
-  read.setAttribute('class', 'read')
+  read.addEventListener("change", (event) => {
+    BookObj.read = event.target.checked
+    updateDisplay(library)
+  })
   read.checked = BookObj.read
-  read.setAttribute('data-index', BookObj.index)
 
   let remove_btn = document.createElement('button')
   remove_btn.setAttribute('class', 'remove_btn')
   remove_btn.setAttribute('data-index', BookObj.index)
   remove_btn.textContent = 'Remove'
+  remove_btn.addEventListener('click', () => {
+    removeBook(remove_btn.dataset.index)
+  })
 
-  bookCardElm.appendChild(title)
-  bookCardElm.appendChild(author)
-  bookCardElm.appendChild(read)
-  bookCardElm.appendChild(remove_btn)
-  bookCardElm.setAttribute('data-index', library.length + 1)
-
-  return bookCardElm
-
+  this.bookCardElm = document.createElement('div')
+  this.bookCardElm.setAttribute('class', 'book_card')
+  this.bookCardElm.appendChild(title)
+  this.bookCardElm.appendChild(author)
+  this.bookCardElm.appendChild(read)
+  this.bookCardElm.appendChild(remove_btn)  
 }
 
+function removeBook(index) {
+  library.splice(index, 1);
+  for (let i = 0; i < library.length; i++) {
+    library[i].index = i
+  }
+  updateDisplay(library)
+}
 
-function updateDisplay() {
+function addBookToLibrary(title, author, read) {
+  library.push(new Book(title, author, read, library.length))
+}
+
+function updateDisplay(library) {
   main.innerHTML = ''
   library.forEach((book) => {
-    main.appendChild((function() { return BookCard(book) }()))
+    let book_card = new BookCard(book)
+    main.appendChild((book_card.bookCardElm))
   })
-
-  document.querySelectorAll('.read').forEach((checkbox) => {
-    checkbox.addEventListener("change", (event) => {
-      library[event.target.dataset.index].read = event.target.checked
-      updateDisplay()
-    })
-  })
-
-  document.querySelectorAll('.remove_btn').forEach((button) => {
-    button.addEventListener("click", (event) => {
-      library.splice(event.target.dataset.index, 1)
-      updateDisplay()
-  })
-  removeBook()
-})
-
-console.table(library)
 }
 
-
-
-document.addEventListener('load', updateDisplay())
+document.addEventListener('load', updateDisplay(library))
 
 new_book_btn.addEventListener('click', () => {
   modal.showModal()
@@ -128,7 +101,7 @@ form.addEventListener('submit', (event) => {
   let _read = document.querySelector('.read_in').checked
   modal.close()
   addBookToLibrary(_title, _author, _read)
-  updateDisplay()
+  updateDisplay(library)
 })
 
 form_close.addEventListener("click",
